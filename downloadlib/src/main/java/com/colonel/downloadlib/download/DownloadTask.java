@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * Created by gaojian6 on 17-10-12.
+ * Created by gaojian on 17-10-12.
  */
 
 public class DownloadTask {
@@ -155,7 +155,6 @@ public class DownloadTask {
                 }
             } catch (ProtocolException e) {
                 retryDonwnload(e);
-                e.printStackTrace();
             } catch (MalformedURLException e) {
                 retryDonwnload(e);
                 e.printStackTrace();
@@ -170,7 +169,7 @@ public class DownloadTask {
             if (mThreadInfo.getEndPos() == 0) {
                 fileLength =  connection.getContentLength();
             }
-            File downloadFile = new File(mDownloadRequest.getDirName(), mDownloadRequest.getFileName());
+            File downloadFile = new File(mDownloadRequest.getDirPath(), mDownloadRequest.getFileName());
             InputStream is = null;
             RandomAccessFile raf = null;
             try {
