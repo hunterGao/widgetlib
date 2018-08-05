@@ -25,7 +25,7 @@ public class BaseWebChromeClient extends WebChromeClient {
         if (view instanceof BaseWebView) {
             BaseWebView baseWebView = (BaseWebView) view;
             if (newProgress == 100) {
-                baseWebView.mProgressView.setVisibility(View.GONE);
+//                baseWebView.mProgressView.setVisibility(View.GONE);
             } else {
                 baseWebView.mProgressView.setProgress(newProgress);
             }

@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import com.colonel.viewlib.LineProgressView;
+import com.colonel.viewlib.utils.UIUtils;
 import com.colonle.webviewlib.BaseWebView;
 
 /**
@@ -23,9 +25,8 @@ public class WebActivity extends Activity {
         rootView.setLayoutParams(params);
         BaseWebView webView = new BaseWebView(this);
         rootView.addView(webView, params);
-
         setContentView(rootView);
 
-        Float.parseFloat()
+        webView.loadUrl("http://www.baidu.com");
     }
 }

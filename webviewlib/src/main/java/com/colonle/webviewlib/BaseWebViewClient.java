@@ -12,6 +12,8 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import com.colonle.webviewlib.util.HttpUtils;
+
 /**
  * Created by gaojian on 2018/8/5.
  */
@@ -76,7 +78,20 @@ public class BaseWebViewClient extends WebViewClient {
      */
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            if (!HttpUtils.isHttpUrl(request.getUrl().toString())) {
+                return true;
+            }
+        }
         return super.shouldOverrideUrlLoading(view, request);
+    }
+
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        if (!HttpUtils.isHttpUrl(url)) {
+            return true;
+        }
+        return super.shouldOverrideUrlLoading(view, url);
     }
 
     /**

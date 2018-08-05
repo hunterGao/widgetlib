@@ -37,8 +37,9 @@ public class LineProgressView extends View {
     private void init() {
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-        mPaint.setDither(true);
-        mPaint.setStrokeWidth(10);
+//        mPaint.setDither(true);
+        mPaint.setStyle(Paint.Style.FILL);
+//        mPaint.setStrokeWidth(10);
         mPaint.setColor(Color.GREEN);
     }
 
@@ -51,8 +52,8 @@ public class LineProgressView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
+        canvas.drawRect(0, 0, mWidth * mProgress / 100 , mHeight, mPaint);
         super.onDraw(canvas);
-        canvas.drawRect(0, 0, mProgress / 100 * mWidth, mHeight, mPaint);
     }
 
     public void setProgress(int progress) {

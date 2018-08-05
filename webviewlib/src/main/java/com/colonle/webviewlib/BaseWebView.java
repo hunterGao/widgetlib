@@ -9,6 +9,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 
 import com.colonel.viewlib.LineProgressView;
+import com.colonel.viewlib.utils.UIUtils;
 
 import java.util.HashMap;
 
@@ -37,7 +38,8 @@ public class BaseWebView extends WebView {
 
     private void init() {
         mProgressView = new LineProgressView(getContext());
-        addView(mProgressView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 10));
+        mProgressView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UIUtils.dp2px(getContext(), 4)));
+        addView(mProgressView);
         WebSettings webSettings = getSettings();
         //允许前端页面请求地理位置信息
         webSettings.setGeolocationEnabled(true);
