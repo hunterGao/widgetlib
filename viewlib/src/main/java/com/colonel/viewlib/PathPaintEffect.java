@@ -17,8 +17,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import com.colonel.widgetlib.R;
-
 /**
  * Created by colonel on 2017/11/20.
  */
