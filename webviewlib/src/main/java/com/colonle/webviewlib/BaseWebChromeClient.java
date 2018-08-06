@@ -24,10 +24,9 @@ public class BaseWebChromeClient extends WebChromeClient {
     public void onProgressChanged(WebView view, int newProgress) {
         if (view instanceof BaseWebView) {
             BaseWebView baseWebView = (BaseWebView) view;
+            baseWebView.mProgressView.setProgress(newProgress);
             if (newProgress == 100) {
-//                baseWebView.mProgressView.setVisibility(View.GONE);
-            } else {
-                baseWebView.mProgressView.setProgress(newProgress);
+                baseWebView.mProgressView.setVisibility(View.GONE);
             }
         }
         super.onProgressChanged(view, newProgress);

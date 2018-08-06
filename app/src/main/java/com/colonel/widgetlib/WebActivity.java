@@ -27,6 +27,7 @@ public class WebActivity extends Activity {
         rootView.addView(webView, params);
         setContentView(rootView);
 
-        webView.loadUrl("http://www.baidu.com");
+//        webView.loadUrl("http://www.baidu.com");
+        webView.loadUrl("http://shouji.baidu.com/software/24398454.html");
     }
 }

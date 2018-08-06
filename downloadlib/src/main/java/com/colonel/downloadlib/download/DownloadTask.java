@@ -108,12 +108,14 @@ public class DownloadTask {
 
         private static final String TAG = "DownloadRunnable";
         private int mRedirectCount = 1;
+        private int mRetryCount;
         private ThreadInfo mThreadInfo;
         private DownloadRequest mDownloadRequest;
 
         public DownloadRunnable(ThreadInfo threadInfo, DownloadRequest downloadRequest) {
             mThreadInfo = threadInfo;
             mDownloadRequest = downloadRequest;
+            mRetryCount = downloadRequest.getRetryCount();
         }
 
         @Override
@@ -154,12 +156,13 @@ public class DownloadTask {
                     executeDownload(redirectUrl);
                 }
             } catch (ProtocolException e) {
-                retryDonwnload(e);
+                e.printStackTrace();
+                retryDownload(e);
             } catch (MalformedURLException e) {
-                retryDonwnload(e);
+                retryDownload(e);
                 e.printStackTrace();
             } catch (IOException e) {
-                retryDonwnload(e);
+                retryDownload(e);
                 e.printStackTrace();
             }
         }
@@ -193,14 +196,14 @@ public class DownloadTask {
                 mThreadDAO.deleteThread(mThreadInfo);
                 DownloadListener downloadListener = mDownloadMap.get(mDownloadRequest);
                 if (downloadListener != null) {
-                    downloadListener.downloadSucess();
+                    downloadListener.downloadSuccess();
                 }
                 synchronized (syncObject) {
                     syncObject.notifyAll();
                 }
             } catch (IOException e) {
-                retryDonwnload(e);
                 e.printStackTrace();
+                retryDownload(e);
                 if (fileLength != -1) {
                     mFileDAO.insertFileInfo(new FileInfo(mThreadInfo.getUrl(), fileLength));
                 }
@@ -219,12 +222,12 @@ public class DownloadTask {
             }
         }
 
-        private void retryDonwnload(Exception e) {
-            int retryCount = mDownloadRequest.getRetryCount();
-            if (mDownloadRequest.getRetryCount() > 0) {
-                Log.e("Hunter", "retryDonwnload: " + mDownloadRequest);
+        private void retryDownload(Exception e) {
+            Log.e("Hunter", "retryDownload: ", e);
+            if (mRetryCount > 0) {
+                Log.e("Hunter", "retryDownload: " + mDownloadRequest);
+                mRetryCount--;
                 executeDownload(mDownloadRequest.getUrl());
-                mDownloadRequest.setRetryCount(retryCount--);
             } else {
                 DownloadListener downloadListener = mDownloadMap.get(mDownloadRequest);
                 if (downloadListener != null) {
@@ -238,7 +241,7 @@ public class DownloadTask {
     }
 
     public interface DownloadListener {
-        void downloadSucess();
+        void downloadSuccess();
 
         void downloadFail(int code, String message);
     }

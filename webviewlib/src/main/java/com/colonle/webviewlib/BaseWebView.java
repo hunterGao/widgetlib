@@ -4,10 +4,14 @@ import android.content.Context;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.ViewGroup;
+import android.webkit.DownloadListener;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
+import com.colonel.downloadlib.download.DownloadRequest;
+import com.colonel.downloadlib.download.DownloadTask;
 import com.colonel.viewlib.LineProgressView;
 import com.colonel.viewlib.utils.UIUtils;
 
@@ -18,6 +22,8 @@ import java.util.HashMap;
  */
 
 public class BaseWebView extends WebView {
+
+    private static final String TAG = "BaseWebView";
 
     LineProgressView mProgressView;
 
@@ -56,6 +62,31 @@ public class BaseWebView extends WebView {
 //                setWebContentsDebuggingEnabled(true);
 //            }
         }
+
+        initDownload();
+    }
+
+    private void initDownload() {
+        setDownloadListener(new DownloadListener() {
+            @Override
+            public void onDownloadStart(String url, String userAgent, String contentDisposition, String mimetype, long contentLength) {
+                Log.e(TAG, String.format("onDownloadStart: url = %s, userAgent = %s, contentDisposition = %s, minetype = %s, " +
+                        "contentLength = %d ", url, userAgent, contentDisposition, mimetype, contentLength));
+                DownloadRequest request = new DownloadRequest.Builder(url).build();
+                DownloadTask downloadTask = new DownloadTask(getContext());
+                downloadTask.download(request, new DownloadTask.DownloadListener() {
+                    @Override
+                    public void downloadSuccess() {
+                        Log.e(TAG, "downloadSuccess: ");
+                    }
+
+                    @Override
+                    public void downloadFail(int code, String message) {
+                        Log.e(TAG, String.format("code = %d, message = %s", code, message));
+                    }
+                });
+            }
+        });
     }
 
     /**
