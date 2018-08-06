@@ -55,6 +55,18 @@ public class DownloadTask {
 
         String url = downloadRequest.getUrl();
         if (TextUtils.isEmpty(url)) {
+            if (downloadListener != null) {
+                downloadListener.downloadFail(DownloadConstant.DownloadErrorCode.DOWNLOAD_URL_EMPTY,
+                        DownloadConstant.DOWNLOAD_ERROR_MESSAGE[DownloadConstant.DownloadErrorCode.DOWNLOAD_URL_EMPTY]);
+            }
+            return;
+        }
+        File dir = new File(downloadRequest.getDirPath());
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        if (!dir.exists()) {
+            Log.e("Hunter", "download: ");
             return;
         }
 
