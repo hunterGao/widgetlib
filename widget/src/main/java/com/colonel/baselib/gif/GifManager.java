@@ -1,4 +1,4 @@
-package com.colonel.widgetlib.gif;
+package com.colonel.baselib.gif;
 
 import android.content.Context;
 import android.graphics.Bitmap;

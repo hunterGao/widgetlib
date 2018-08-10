@@ -32,6 +32,7 @@ dependencies {
     implementation project(':viewlib')
     implementation project(':webviewlib')
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    implementation project(':widget')
 }
 repositories {
     mavenCentral()
