@@ -1,5 +1,8 @@
 package com.colonle.webviewlib;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
 import android.text.TextUtils;
@@ -89,6 +92,15 @@ public class BaseWebViewClient extends WebViewClient {
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         if (!HttpUtils.isHttpUrl(url)) {
+            try {
+                Uri data = Uri.parse(url);
+                Intent intent = new Intent();
+                intent.setData(data);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                view.getContext().startActivity(intent);
+            } catch (Exception e) {
+
+            }
             return true;
         }
         return super.shouldOverrideUrlLoading(view, url);

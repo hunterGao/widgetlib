@@ -2,18 +2,16 @@ package com.colonel.widgetlib;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
+import android.util.Log;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.colonel.viewlib.LineProgressView;
-import com.colonel.viewlib.utils.UIUtils;
+import com.colonel.baselib.utils.ApplicationHelper;
+import com.colonel.baselib.utils.PermissionHelper;
 import com.colonle.webviewlib.BaseWebView;
-
-import java.security.Permission;
 
 /**
  * Created by gaojian on 2018/8/5.
@@ -33,14 +31,20 @@ public class WebActivity extends Activity {
         setContentView(rootView);
 
 //        webView.loadUrl("http://www.baidu.com");
-        webView.loadUrl("http://shouji.baidu.com/software/24398454.html");
-        requestPermission();
+//        webView.loadUrl("http://shouji.baidu.com/software/24398454.html");
+        webView.loadUrl("http://market.faw-benteng.com/2018/x80-x40-t0620/index_a.html#radid=3EgTpbFZffQe&aadid=716-123");
+//        if (!PermissionHelper.inst().hasPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+//            PermissionHelper.inst().requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+//        }
+
+        PermissionHelper.inst().requestPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        ApplicationHelper.inst(this).isPermissionDeclare("123");
+
     }
 
-    private void requestPermission() {
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-        }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.e("Hunter", "onRequestPermissionsResult: " + permissions.length);
     }
 }

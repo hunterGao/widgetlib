@@ -5,6 +5,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.webkit.DownloadListener;
 import android.webkit.WebSettings;
@@ -24,6 +25,8 @@ import java.util.HashMap;
 public class BaseWebView extends WebView {
 
     private static final String TAG = "BaseWebView";
+    private boolean isTop; // webview是否滑动到顶部
+    private OnWebViewScrollListener mScrollListener;
 
     LineProgressView mProgressView;
 
@@ -46,7 +49,12 @@ public class BaseWebView extends WebView {
         mProgressView = new LineProgressView(getContext());
         mProgressView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UIUtils.dp2px(getContext(), 4)));
         addView(mProgressView);
+        setOverScrollMode(OVER_SCROLL_ALWAYS);
         WebSettings webSettings = getSettings();
+        //将图片调整到适合webview的大小
+        webSettings.setUseWideViewPort(true);
+        //隐藏原生的缩放控件
+        webSettings.setDisplayZoomControls(false);
         //允许前端页面请求地理位置信息
         webSettings.setGeolocationEnabled(true);
         //允许与javascript进行交互
@@ -58,8 +66,8 @@ public class BaseWebView extends WebView {
         //debug模式下允许在浏览器调试webview
         //文档https://developers.google.com/web/tools/chrome-devtools/remote-debugging/webviews
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                setWebContentsDebuggingEnabled(true);
 //            if ((getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0 ) {
-//                setWebContentsDebuggingEnabled(true);
 //            }
         }
 
@@ -117,5 +125,46 @@ public class BaseWebView extends WebView {
                 loadUrl(url, headers);
             }
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                if (getScrollY() <= 0) {
+                    scrollTo(0, 1);
+                }
+                break;
+            case MotionEvent.ACTION_MOVE:
+
+                break;
+        }
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        Log.e(TAG, "onScrollChanged: ");
+
+    }
+
+    @Override
+    protected void onOverScrolled(int scrollX, int scrollY, boolean clampedX, boolean clampedY) {
+        super.onOverScrolled(scrollX, scrollY, clampedX, clampedY);
+        Log.e(TAG, "onOverScrolled: ");
+    }
+
+    @Override
+    public void computeScroll() {
+        super.computeScroll();
+    }
+
+    public void setOnWebViewScrollListener(OnWebViewScrollListener listener) {
+        mScrollListener = listener;
+    }
+
+    public interface OnWebViewScrollListener {
+        void onTop();
     }
 }
