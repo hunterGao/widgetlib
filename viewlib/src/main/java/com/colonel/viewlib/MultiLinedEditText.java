@@ -9,7 +9,7 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.widget.EditText;
 
-import com.maoqilai.paizhaoquzi.utils.ScreenUtils;
+import com.colonel.viewlib.utils.UIUtils;
 
 /**
  * Created by  on 2018/1/23.
@@ -45,6 +45,6 @@ public class MultiLinedEditText extends EditText {
     }
 
     private int getMarginBottom() {
-        return ScreenUtils.dip2px(getContext(), 10);
+        return UIUtils.dp2px(getContext(), 10);
     }
 }

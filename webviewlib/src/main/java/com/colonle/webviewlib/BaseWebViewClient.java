@@ -1,5 +1,6 @@
 package com.colonle.webviewlib;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -70,6 +71,7 @@ public class BaseWebViewClient extends WebViewClient {
      */
     @Override
     public void onLoadResource(WebView view, String url) {
+        Log.e("Hunter", "onLoadResource: " + url);
         super.onLoadResource(view, url);
     }
 
@@ -81,6 +83,9 @@ public class BaseWebViewClient extends WebViewClient {
      */
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            Log.e("Hunter", "shouldOverrideUrlLoading: " + request.getUrl());
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             if (!HttpUtils.isHttpUrl(request.getUrl().toString())) {
                 return true;
@@ -131,6 +136,9 @@ public class BaseWebViewClient extends WebViewClient {
     @Override
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
+        if (!mWebView.getSettings().getLoadsImagesAutomatically()) {
+            mWebView.getSettings().setLoadsImagesAutomatically(true);
+        }
         loadJavaScript("javascript:callJS()");
     }
 

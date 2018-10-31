@@ -45,6 +45,21 @@ public class BaseWebView extends WebView {
         init();
     }
 
+    public void onPause() {
+        pauseTimers();
+    }
+
+    public void onResume() {
+        resumeTimers();
+    }
+
+    public void onDestrory() {
+        loadDataWithBaseURL(null, "", "text/html", "utf-8", null);
+        clearHistory();
+        ((ViewGroup) getParent()).removeView(this);
+        destroy();
+    }
+
     private void init() {
         mProgressView = new LineProgressView(getContext());
         mProgressView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, UIUtils.dp2px(getContext(), 4)));
@@ -61,6 +76,8 @@ public class BaseWebView extends WebView {
         webSettings.setJavaScriptEnabled(true);
         //允许Javascript弹窗
         webSettings.setJavaScriptCanOpenWindowsAutomatically(true);
+        // 是否自动加载图片
+        webSettings.setLoadsImagesAutomatically(true);
         setWebChromeClient(new BaseWebChromeClient(getContext()));
         setWebViewClient(new BaseWebViewClient(this));
         //debug模式下允许在浏览器调试webview

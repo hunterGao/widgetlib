@@ -32,6 +32,14 @@ public class BaseWebChromeClient extends WebChromeClient {
         super.onProgressChanged(view, newProgress);
     }
 
+    //获取h5页面标题
+    @Override
+    public void onReceivedTitle(WebView view, String title) {
+        super.onReceivedTitle(view, title);
+        // NOTE 有可能为null，最好有url对应的title
+
+    }
+
     //web前端页面地理位置请求
     @Override
     public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
